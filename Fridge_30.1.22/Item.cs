@@ -6,7 +6,8 @@ namespace Fridge_30._1._22
 {
     class Item
     {
-        public string itemId { get; private set; }
+        public static int counter = 0;
+        public int itemId { get; private set; }
         public string itemName { get; private set; }
         public string onShelf { get; set; }
         public ItemType itemType { get; }
@@ -14,14 +15,15 @@ namespace Fridge_30._1._22
         public DateTime expiryDate { get; set; }
         public double spaceToTakeUp { get; set; }
 
-        public Item(string itemId, string itemName ,string onShelf ,ItemType itemType, Kosher kosher ,DateTime expiryDate ,double spaceToTakeUp)
+        public Item( string itemName ,string onShelf ,ItemType itemType, Kosher kosher ,DateTime expiryDate ,double spaceToTakeUp)
         {
-            this.itemId= itemId;
+            this.itemId= counter;
              this.itemName=itemName;
              this.onShelf=onShelf; 
              this.itemType=itemType;
              this.expiryDate=expiryDate;
              this.spaceToTakeUp=spaceToTakeUp;
+            counter++;
         }
 
         public override string ToString()

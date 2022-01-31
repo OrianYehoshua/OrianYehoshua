@@ -6,17 +6,19 @@ namespace Fridge_30._1._22
 {
     class Shelf
     {
-        public string shelfId { get; private set; }
+        public static int Shelfcounter = 0;
+        public int shelfId { get; private set; }
         public int floorNumber { get; private set; }
         public double spaceOfShelf { get; private set; }
         public List<Item> items { get; set; }
 
-        public Shelf(string shelfId, int floorNumber, double spaceOfShelf)
+        public Shelf( int floorNumber, double spaceOfShelf)
         {
-            this.shelfId = shelfId;
+            this.shelfId = Shelfcounter;
             this.floorNumber = floorNumber;
             this.spaceOfShelf = spaceOfShelf;
             this.items = new List<Item>();
+            Shelfcounter++;
         }
         public override string ToString()
         {
@@ -44,14 +46,14 @@ namespace Fridge_30._1._22
                 return "The item has not been added to the current shelf";
         }
 
-        public string RemoveItem(string itemId)
+        public string RemoveItem(int itemId)
         {
             for (int i = 0; i < this.items.Count; i++)
             {
                 if (this.items[i].itemId == itemId)
                 {
                     this.items.Remove(this.items[i]);
-                    return "The item was removed successfully";
+                    return $"{this.items[i]} was removed successfully";
                 }               
             }
             return "item wasn't found";
@@ -68,6 +70,21 @@ namespace Fridge_30._1._22
                 }
             }
         }
+
+        public List<Item> RemoveItemsByExpireRangeAndKosher(int days, Kosher kosher)
+        {
+             List<Item> RemovedItems = new List<Item>();
+            for (int i = 0; i < this.items.Count; i++)
+            {
+                if((Math.Abs((DateTime.Now- this.items[i].expiryDate).Days)<days) && this.items[i].kosher==kosher)
+                {
+                    RemovedItems.Add(this.items[i]);
+                    RemoveItem(this.items[i].itemId);
+                }
+            }
+            return RemovedItems;
+        }
+
 
         public List<Item> returnItem(Kosher kosher, ItemType type)
         {

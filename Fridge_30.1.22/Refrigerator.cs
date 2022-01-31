@@ -47,7 +47,7 @@ namespace Fridge_30._1._22
             }
         }
 
-        public void RemoveItemFromRefrigerator(string itemId)
+        public void RemoveItemFromRefrigerator(int itemId)
         {
             bool wasremoved = false;
             for (int i = 0; i < this.shelves.Count && wasremoved == false; i++)
@@ -76,6 +76,67 @@ namespace Fridge_30._1._22
             
         }
 
+        public List<Item> SortedByExpiryDate()
+        {
+            List<Item> AllItems = new List<Item>();
+            foreach (Shelf shelf in this.shelves)
+            {
+                AllItems.AddRange(shelf.items);
+            }
+            AllItems.Sort((date1, date2) => date1.expiryDate.CompareTo(date2.expiryDate));
+            return AllItems;
+        }
+
+        public List<Shelf> sortSelvesByLeftSpace()
+        {
+            this.shelves.Sort((first, second) => first.spaceOfShelf.CompareTo(second.spaceOfShelf));
+            return this.shelves;
+        }
+
+        //TODO:	הפונקציה תמיין ותחזיר את כלל המקררים לפי מקום פנוי שנשאר בהם 
+
+        public void GettingReadyForShopping()
+        {
+            if (SpaceLeftInRefrigerator() != 29)
+            {
+                if (SpaceLeftInRefrigerator() < 20)
+                {
+                    CleaningTheRefrigerator();
+                }
+                if (SpaceLeftInRefrigerator() < 20)
+                {
+                    List<Item> removedItemsFromAllShelves = new List<Item>();
+                    foreach (Shelf shelf in this.shelves)
+                    {
+                        removedItemsFromAllShelves.AddRange(shelf.RemoveItemsByExpireRangeAndKosher(3, Kosher.Dairy));
+                        Console.WriteLine("All dairy products that are valid for less than three days have been removed");
+                        if (SpaceLeftInRefrigerator() > 20) break;
+                        removedItemsFromAllShelves.AddRange(shelf.RemoveItemsByExpireRangeAndKosher(7, Kosher.Meat));
+                        Console.WriteLine("All meat products that are valid for less than a week have been removed");
+                        if (SpaceLeftInRefrigerator() > 20) break;
+                        removedItemsFromAllShelves.AddRange(shelf.RemoveItemsByExpireRangeAndKosher(1, Kosher.Parve));
+                        Console.WriteLine("All parve products that are valid for less than a day have been removed");
+                    }
+                    if (SpaceLeftInRefrigerator() < 20)
+                    {
+                        Console.WriteLine("This is not the right time for shopping!");
+                        foreach (Item item in removedItemsFromAllShelves)
+                        {
+                            InsertItemToRefrigerator(item);
+                        }        
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nRefrigerator is ready for shopping!\n");
+                    }
+                }
+            }
+            else
+                Console.WriteLine("\nRefrigerator is ready for shopping!\n");
+        }
+
+       
+           
 
     }
 }
