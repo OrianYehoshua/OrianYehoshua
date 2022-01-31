@@ -23,11 +23,24 @@ namespace Fridge_30._1._22
              this.expiryDate=expiryDate;
              this.spaceToTakeUp=spaceToTakeUp;
         }
+
         public override string ToString()
         {
             return $"Item data: \n Item id: {this.itemId}\n Item name: {this.itemName}\n On which shelf the item?: {this.onShelf}\n Item type: {this.itemType}\n Kosher: {this.kosher}\n Expiry date: {this.expiryDate}\n How much space the item takes up on the shelf {this.spaceToTakeUp}\n";
 
         }
+         public bool IsExpired()
+        {
+            if(DateTime.Now>=this.expiryDate)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
 
     }
 }
