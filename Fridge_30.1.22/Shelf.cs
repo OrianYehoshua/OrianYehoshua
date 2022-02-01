@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+
 
 namespace Fridge_30._1._22
 {
@@ -22,8 +22,18 @@ namespace Fridge_30._1._22
         }
         public override string ToString()
         {
-            return $"Shelf data: \n Shelf id: {this.shelfId}\n How much space is on the shelf?: {this.spaceOfShelf}\n The items that are on the shelf : {this.items}\n";
+            return $"Shelf data: \n Shelf id: {this.shelfId}\n How much space is on the shelf?: {this.spaceOfShelf}\n The items that are on the shelf : {PrintItems()}\n";
 
+        }
+
+        public string PrintItems()
+        {
+            string print = "";
+            foreach (Item item in this.items)
+            {
+                print += item.ToString();
+            }
+            return print;
         }
         public double SpaceLeftOnTheShelf()
         {
