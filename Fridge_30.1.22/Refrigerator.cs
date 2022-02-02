@@ -24,13 +24,13 @@ namespace Fridge_30._1._22
         }
         public override string ToString()
         {
-            return $"Refrigerator data: \n Refrigerator id: {this.refrigeratorId}\n Refrigerator model: {this.refrigeratorModel}\n Refrigerator color: {this.refrigeratorColor}\n Number of shelves: {this.numberOfShelves}\n Shelves list:\n {PrintShelves()}\n";
+            return $"Refrigerator data: \n Refrigerator id: {this.refrigeratorId}\n Refrigerator model: {this.refrigeratorModel}\n Refrigerator color: {this.refrigeratorColor}\n Number of shelves: {this.numberOfShelves}\n Shelves list:\n {PrintShelves(this.shelves)}\n";
         }
 
-        public string PrintShelves()
+        public string PrintShelves(List<Shelf> shelves)
         {
             string print = "";
-            foreach (Shelf shelf in this.shelves)
+            foreach (Shelf shelf in shelves)
             {
                 print += shelf.ToString();
             }
@@ -47,16 +47,29 @@ namespace Fridge_30._1._22
             return currentSpace;
         }
 
-        public void InsertItemToRefrigerator(Item item)
+        public string InsertItemToRefrigerator(Item item)
         {
-            bool wasInserted = false;
-            for (int i = 0; i < this.shelves.Count && wasInserted==false; i++)
+            int indexOfItemShelf = item.onShelf - 1;
+            if (this.shelves[indexOfItemShelf].SpaceLeftOnTheShelf()>=item.spaceToTakeUp)
             {
-                if(this.shelves[i].AddItem(item)== "The item was added successfully")
-                {
-                    wasInserted = true;
-                }
+               this.shelves[indexOfItemShelf].items.Add(item);
+               return "the item added";
             }
+            else
+            {
+                if (SpaceLeftInRefrigerator() != 0)
+                {
+                    Console.WriteLine("there is no place on this shelf, Please choose another shelf.");
+                    int NewShelf = int.Parse(Console.ReadLine());
+                    item.onShelf = NewShelf;
+                    return InsertItemToRefrigerator(item);
+                }
+                else
+                    return "the refrigerator is full";
+
+
+            }
+                      
         }
 
         public void RemoveItemFromRefrigerator(int itemId)
@@ -79,16 +92,17 @@ namespace Fridge_30._1._22
             }
         }
 
-        public void WhatdoIWantToEat(Kosher kosher, ItemType type)
+        public string WhatdoIWantToEat(Kosher kosher, ItemType type)
         {
+            string print = "";      
             for (int i = 0; i < this.shelves.Count; i++)
             {
-                this.shelves[i].returnItem(kosher, type);
+                print += this.shelves[i].returnItem(kosher, type);
             }
-            
+            return print;
         }
 
-        public List<Item> SortedByExpiryDate()
+        public string SortedByExpiryDate()
         {
             List<Item> AllItems = new List<Item>();
             foreach (Shelf shelf in this.shelves)
@@ -96,13 +110,13 @@ namespace Fridge_30._1._22
                 AllItems.AddRange(shelf.items);
             }
             AllItems.Sort((date1, date2) => date1.expiryDate.CompareTo(date2.expiryDate));
-            return AllItems;
+            return AllItems.ToString();
         }
 
-        public List<Shelf> sortShelvesByLeftSpace()
+        public string sortShelvesByLeftSpace()
         {
             this.shelves.Sort((first, second) => first.spaceOfShelf.CompareTo(second.spaceOfShelf));
-            return this.shelves;
+            return PrintShelves(this.shelves);
         }
 
         public void GettingReadyForShopping()

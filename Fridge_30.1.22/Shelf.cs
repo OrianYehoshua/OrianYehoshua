@@ -22,14 +22,14 @@ namespace Fridge_30._1._22
         }
         public override string ToString()
         {
-            return $"Shelf data: \n Shelf id: {this.shelfId}\n How much space is on the shelf?: {this.spaceOfShelf}\n The items that are on the shelf : {PrintItems()}\n";
+            return $"Shelf data: \n Shelf id: {this.shelfId}\n How much space is on the shelf?: {this.spaceOfShelf}\n The items that are on the shelf : {PrintItems(this.items)}\n";
 
         }
 
-        public string PrintItems()
+        public string PrintItems(List<Item> items)
         {
             string print = "";
-            foreach (Item item in this.items)
+            foreach (Item item in items)
             {
                 print += item.ToString();
             }
@@ -45,16 +45,7 @@ namespace Fridge_30._1._22
             return this.spaceOfShelf - currentSpace;
         }
 
-        public string AddItem(Item item)
-        {
-            if (SpaceLeftOnTheShelf() > item.spaceToTakeUp)
-            {
-                items.Add(item);
-                return "The item was added successfully";
-            }
-            else
-                return "The item has not been added to the current shelf";
-        }
+      
 
         public string RemoveItem(int itemId)
         {
@@ -63,7 +54,7 @@ namespace Fridge_30._1._22
                 if (this.items[i].itemId == itemId)
                 {
                     this.items.Remove(this.items[i]);
-                    return $"{this.items[i]} was removed successfully";
+                    return "item was removed successfully";
                 }               
             }
             return "item wasn't found";
@@ -74,7 +65,7 @@ namespace Fridge_30._1._22
         {
             for (int i = 0; i <this.items.Count; i++)
             {
-                if(this.items[i].IsExpired()==true)
+                if(this.items[i].IsExpired()==false)
                 {
                     RemoveItem(this.items[i].itemId);
                 }
@@ -92,11 +83,12 @@ namespace Fridge_30._1._22
                     RemoveItem(this.items[i].itemId);
                 }
             }
+            Console.WriteLine(PrintItems(RemovedItems));
             return RemovedItems;
         }
 
 
-        public List<Item> returnItem(Kosher kosher, ItemType type)
+        public string returnItem(Kosher kosher, ItemType type)
         {
             List<Item> returnItems = new List<Item>();
             for (int i = 0; i < this.items.Count; i++)
@@ -106,7 +98,7 @@ namespace Fridge_30._1._22
                     returnItems.Add(this.items[i]);
                 }
             }
-            return returnItems;
+            return PrintItems(returnItems);
         }
 
        

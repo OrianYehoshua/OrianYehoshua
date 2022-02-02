@@ -34,24 +34,31 @@ namespace Fridge_30._1._22
                     Console.WriteLine(refrigerator.ToString());
                     break;
                 case 2:
-                    Console.WriteLine(refrigerator.SpaceLeftInRefrigerator());
+                    Console.WriteLine($"how much space is left in the refrigerator: {refrigerator.SpaceLeftInRefrigerator()}");
                     break;
                 case 3:
                     Item item = EnterItem();
                     refrigerator.InsertItemToRefrigerator(item);
+                    Console.WriteLine(refrigerator.ToString());
                     break;
                 case 4:
                     Console.WriteLine("Enter item id to remove");
                     int itemId = int.Parse(Console.ReadLine());
                     refrigerator.RemoveItemFromRefrigerator(itemId);
+                    Console.WriteLine(refrigerator.ToString());
                     break;
                 case 5:
                     Console.WriteLine("All items that inspected: ");
                     foreach (Shelf shelf in refrigerator.shelves)
                     {
-                        shelf.items.ToString();
+                        Console.WriteLine(shelf.PrintItems(shelf.items));
                     }
                     refrigerator.CleaningTheRefrigerator();
+                    Console.WriteLine("the current items:");
+                    foreach (Shelf shelf in refrigerator.shelves)
+                    {
+                        Console.WriteLine(shelf.PrintItems(shelf.items));
+                    }
                     break;
                 case 6:
                     Console.WriteLine("what do you want to eat? enter kosher and type");
@@ -61,16 +68,16 @@ namespace Fridge_30._1._22
                     Console.WriteLine("Enter item Kosher (Meat, Dairy, Parve)");
                     input = Console.ReadLine();
                     Kosher kosher2 = EnterKosher(input);
-                    refrigerator.WhatdoIWantToEat(kosher2, type2);
+                    Console.WriteLine(refrigerator.WhatdoIWantToEat(kosher2, type2)); 
                     break;
                 case 7:
-                    Console.WriteLine("All items arranged by their expiration date:\n" + refrigerator.SortedByExpiryDate());
+                    Console.WriteLine($"All items arranged by their expiration date: {refrigerator.SortedByExpiryDate()}");
                     break;
                 case 8:
-                    Console.WriteLine("All the shelves arranged according to the free space left on them (from large to small):\n" + refrigerator.sortShelvesByLeftSpace()); 
+                    Console.WriteLine($"All the shelves arranged according to the free space left on them (from large to small): {refrigerator.sortShelvesByLeftSpace()}"); 
                     break;
                 case 9:
-                    Console.WriteLine("All refrigerators  arranged according to the available space left in them:\n"+sortRefrigeratorsByLeftSpace(refrigerators)); 
+                    Console.WriteLine($"All refrigerators  arranged according to the available space left in them: {sortRefrigeratorsByLeftSpace(refrigerators)}"); 
                     break;
                 case 10:
                     refrigerator.GettingReadyForShopping();
@@ -103,7 +110,11 @@ namespace Fridge_30._1._22
                     entered = true;
                 }
                 else
+                { 
                     Console.WriteLine("enter again");
+                    input = Console.ReadLine();
+                }
+                   
             }
             return itemType;
 
@@ -112,7 +123,7 @@ namespace Fridge_30._1._22
         public static Kosher EnterKosher(string input)
         {
             bool entered = false;
-            Kosher kosher = Kosher.Meat;
+            Kosher kosher = Kosher.Dairy;
             while (entered == false)
             {
                 if (input == Kosher.Meat.ToString())
@@ -131,7 +142,11 @@ namespace Fridge_30._1._22
                     entered = true;
                 }
                 else
+                {
                     Console.WriteLine("enter again");
+                    input = Console.ReadLine();
+                }
+                    
             }
             return kosher;
     }
@@ -141,7 +156,7 @@ namespace Fridge_30._1._22
             Console.WriteLine("Enter item name");
             string itemName = Console.ReadLine();
             Console.WriteLine("Enter item shelf");
-            string onShelf = Console.ReadLine();
+            int onShelf = int.Parse(Console.ReadLine());
             Console.WriteLine("Enter item type (Food or Drink)");
             string input = Console.ReadLine();
             ItemType itemType = EnterItemType(input);

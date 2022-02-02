@@ -8,13 +8,13 @@ namespace Fridge_30._1._22
         public static int counter = 0;
         public int itemId { get; private set; }
         public string itemName { get; private set; }
-        public string onShelf { get; set; }
+        public int onShelf { get; set; }
         public ItemType itemType { get; }
         public Kosher kosher { get; }
         public DateTime expiryDate { get; set; }
         public double spaceToTakeUp { get; set; }
 
-        public Item( string itemName ,string onShelf ,ItemType itemType, Kosher kosher ,DateTime expiryDate ,double spaceToTakeUp)
+        public Item( string itemName ,int onShelf ,ItemType itemType, Kosher kosher ,DateTime expiryDate ,double spaceToTakeUp)
         {
             this.itemId= counter;
              this.itemName=itemName;
@@ -32,7 +32,7 @@ namespace Fridge_30._1._22
         }
          public bool IsExpired()
         {
-            if(DateTime.Now>=this.expiryDate)
+            if(DateTime.Today>=this.expiryDate)
             {
                 return false;
             }
